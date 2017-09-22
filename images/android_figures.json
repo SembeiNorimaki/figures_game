@@ -1,16 +1,16 @@
 {
   "1": {
-      "file": "a.png",
+      "file": "./images/a.jpg",
       "ca": "A",
       "en": "A"
   },
   "2": {
-      "file": "b.png",
+      "file": "./images/b.jpg",
       "ca": "B",
       "en": "B"
   },
   "3": {
-      "file": "c.png",
+      "file": "./images/c.jpg",
       "ca": "C",
       "en": "C"
   }
