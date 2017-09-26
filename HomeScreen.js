@@ -44,7 +44,7 @@ class HomeScreen extends Component {
               flex: 1,
               resizeMode,
             }}
-            source={require('./images/background.jpg')}
+            source={require('./images/blue.jpg')}
           />
         </View>
 
@@ -59,11 +59,16 @@ class HomeScreen extends Component {
             style={{
               textAlign: 'center',
               fontSize: 40,
+              color:"#444"
             }}
           >
-            Ola ke ase
+            Figures
           </Text>
+          
+
+          <View style={{ height: 50, backgroundColor: "transparent" }} />
           <Button
+            color="red"
             onPress={() => navigate('PlayScr', { "level": "1" })}
             
             title="Play"

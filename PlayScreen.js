@@ -1,7 +1,14 @@
+/* 
+  Todo: 
+  - Check what happens if importing an unexisting file
+
+
+*/
+
 import React, { Component } from 'react';
 import {
   Image,
-  AppRegistry,
+ // AppRegistry,
   StyleSheet,
   Text,
   TextInput,
@@ -13,13 +20,14 @@ import {
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-import level_data from './images/android_figures.json';
+import level_data from './level_data.json';
+import user_data from './user_data.json'
 import Images from './images';
+
 
 const { UIManager } = NativeModules;
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
-
 
 var CustomLayoutAnimation = {
     duration: 2000,
@@ -36,8 +44,6 @@ var CustomLayoutAnimation = {
 class PlayScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     //title: `Level ${navigation.state.params.level}`,
-    //headerStyle: {backgroundColor:"white"},
-    //headerTintColor: 'blue',
     header: null,
   });
 
@@ -45,24 +51,19 @@ class PlayScreen extends Component {
     super(props);
     this.state = {
       text: "",
-      answer: level_data["1"]["en"],
-      file: level_data["1"]["file"],
-      n: 5,
+      answer: level_data[user_data.level][user_data.language],
+      n: level_data[user_data.level][user_data.language].length,
       top: 140,
-      level: this.props.navigation.state.params.level
+      level: user_data.level
     }
-    //text: ['', '', '', ''],
+    
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handleButton = this.handleButton.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
 
     console.ignoredYellowBox = ['Remote debugger'];
-
-
   }
 
   componentDidMount() {
-    //const { params } = this.props.navigation.state;
-    //this.setState({level: params.level})
     this.timerID = setInterval(
       () => this.tick(),
       2500
@@ -76,6 +77,7 @@ class PlayScreen extends Component {
   tick() {
     //LayoutAnimation.linear();
     LayoutAnimation.configureNext(CustomLayoutAnimation)
+
     if (this.state.top < -100) {
       this.setState({top: this.state.top + 300})
     } else {
@@ -83,44 +85,56 @@ class PlayScreen extends Component {
     }
   }
 
-  handleButton() {
-    const { navigate } = this.props.navigation;
-    //Alert.alert(this.state.text);
-    //const {goBack} = this.props.navigation;
-    navigate('PlayScr', { "level": String(parseInt(this.state.level) + 1) })
-    
-    /*if (this.state.text === this.state.answer) {
-      Alert.alert(
+
+
+  checkAnswer(text) {
+    if (text === this.state.answer) {
+     /* Alert.alert(
         'Correct',
         '',
         [
           {text: 'Return', onPress: () => this.props.navigation.goBack(null), style: 'cancel'},
           {text: '', onPress: () => {}},
-          {text: 'Next Level', onPress: () => console.log('OK Pressed')},
+          {text: 'Next Level', onPress: () => {
+            this.setState({
+              text: "",
+              answer: level_data[String(parseInt(this.state.level) + 1)][user_data.language],
+              n: level_data[String(parseInt(this.state.level) + 1)][user_data.language].length,
+              top: 140,
+              level: String(parseInt(this.state.level) + 1)
+            })
+          }},
         ],
         { cancelable: false }
+      );*/
+      this.setState({
+        text: "",
+        answer: level_data[String(parseInt(this.state.level) + 1)][user_data.language],
+        n: level_data[String(parseInt(this.state.level) + 1)][user_data.language].length,
+        top: 140,
+        level: String(parseInt(this.state.level) + 1)
+      })
+      this.forceUpdate()
 
-        );
-      this.props.navigation.goBack(null);
     } else {
-      Alert.alert(
+      /*Alert.alert(
         'Wrong',
-        this.state.text + 'is not correct',
-      );
+        text + 'is not correct',
+      );*/
       this.setState({text: ""})
-    }*/
+    }
+    this.setState({text: ""})
   }
 
   handleKeyPress(i, input_text) {
-    //Alert.alert(input_text)
-    const text = this.state.text;
-    text[i] = input_text;
 
+    let text = this.state.text;
+    text += input_text;    
     this.setState({text: text});
 
     // if it's the last field
     if (i === this.state.n-1) {
-      this.handleButton();
+      this.checkAnswer(text);
     } else {
       this.refs[i+1].focus();
     }
