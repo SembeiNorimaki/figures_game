@@ -63,8 +63,7 @@ class HomeScreen extends Component {
             }}
           >
             Figures
-          </Text>
-          
+          </Text>          
 
           <View style={{ height: 50, backgroundColor: "transparent" }} />
           <Button
@@ -73,9 +72,13 @@ class HomeScreen extends Component {
             
             title="Play"
           />
+          <View style={{ height: 30, backgroundColor: "transparent" }} />
+          <Button
+            color="green"
+            onPress={() => navigate('LanguageScr')}
+            title="Language"
+          />
         </View>
-
-
       </View>
       
     );

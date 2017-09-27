@@ -1,14 +1,14 @@
 /* 
   Todo: 
   - Check what happens if importing an unexisting file
-
-
+  - After solving the last level it crashes
+  - Select language screen
+  - save progress
 */
 
 import React, { Component } from 'react';
 import {
   Image,
- // AppRegistry,
   StyleSheet,
   Text,
   TextInput,
@@ -24,13 +24,12 @@ import level_data from './level_data.json';
 import user_data from './user_data.json'
 import Images from './images';
 
-
 const { UIManager } = NativeModules;
 UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
 var CustomLayoutAnimation = {
-    duration: 2000,
+    duration: 1500,
     create: {
       type: LayoutAnimation.Types.linear,
       property: LayoutAnimation.Properties.opacity,
@@ -43,15 +42,14 @@ var CustomLayoutAnimation = {
 
 class PlayScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    //title: `Level ${navigation.state.params.level}`,
     header: null,
   });
 
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
-      answer: level_data[user_data.level][user_data.language],
+      text: Array(5).fill(""),
+      solution: level_data[user_data.level][user_data.language],
       n: level_data[user_data.level][user_data.language].length,
       top: 140,
       level: user_data.level
@@ -66,7 +64,7 @@ class PlayScreen extends Component {
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      2500
+      2000
     );
   }
 
@@ -85,60 +83,70 @@ class PlayScreen extends Component {
     }
   }
 
-
-
   checkAnswer(text) {
-    if (text === this.state.answer) {
-     /* Alert.alert(
+    if (text === this.state.solution) {
+      Alert.alert(
         'Correct',
         '',
         [
           {text: 'Return', onPress: () => this.props.navigation.goBack(null), style: 'cancel'},
           {text: '', onPress: () => {}},
           {text: 'Next Level', onPress: () => {
+
+            let nextLevel = String(parseInt(this.state.level) + 1)
+
             this.setState({
-              text: "",
-              answer: level_data[String(parseInt(this.state.level) + 1)][user_data.language],
-              n: level_data[String(parseInt(this.state.level) + 1)][user_data.language].length,
+              text: Array(level_data[nextLevel][user_data.language].length).fill(""),
+              solution: level_data[nextLevel][user_data.language],
+              n: level_data[nextLevel][user_data.language].length,
               top: 140,
-              level: String(parseInt(this.state.level) + 1)
+              level: nextLevel
             })
+
           }},
         ],
         { cancelable: false }
-      );*/
-      this.setState({
-        text: "",
-        answer: level_data[String(parseInt(this.state.level) + 1)][user_data.language],
-        n: level_data[String(parseInt(this.state.level) + 1)][user_data.language].length,
-        top: 140,
-        level: String(parseInt(this.state.level) + 1)
-      })
-      this.forceUpdate()
+      );
+
+      
 
     } else {
+      Alert.alert(
+        'Wrong',
+        text + ' is not correct',
+      );
+      this.setState({
+        text: Array(level_data[this.state.level][user_data.language].length).fill(""),
+        top: 140
+      })
+    }
+    
+    //this.forceUpdate()
+
+    //} else {
       /*Alert.alert(
         'Wrong',
         text + 'is not correct',
       );*/
-      this.setState({text: ""})
-    }
-    this.setState({text: ""})
+    //  this.setState({aaa: Array(5).fill("")})
+   // }
+    
+    this.refs[0].focus();
   }
 
   handleKeyPress(i, input_text) {
 
     let text = this.state.text;
-    text += input_text;    
+    text[i] = input_text;    
     this.setState({text: text});
+
 
     // if it's the last field
     if (i === this.state.n-1) {
-      this.checkAnswer(text);
+      this.checkAnswer(text.join(""));
     } else {
       this.refs[i+1].focus();
     }
-    
   }
 
   render() {
@@ -222,10 +230,8 @@ class PlayScreen extends Component {
         <View style={{ height: 120, backgroundColor: "white" }} />
         
         <Text style={{ fontSize: 20, textAlign: 'center', position: "absolute", top: 25, left: 135}}> Level {this.state.level}</Text>
-
-
                 
-        <View style={{ height: 2, backgroundColor: "transparent" }} />
+        <View style={{ height: 3, backgroundColor: "transparent" }} />
         
         <View style={{ height: 60, backgroundColor: "white" }} />
 

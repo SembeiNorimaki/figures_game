@@ -14,6 +14,7 @@ import {
 import { StackNavigator } from 'react-navigation';
 import PlayScreen from './PlayScreen';
 import HomeScreen from './HomeScreen';
+import LanguageScreen from './LanguageScreen';
 
 
 const { UIManager } = NativeModules;
@@ -36,6 +37,8 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 const figures = StackNavigator({
   HomeScr: { screen: HomeScreen },
   PlayScr: { screen: PlayScreen },
+  LanguageScr: { screen: LanguageScreen },
+  
 });
 
 
