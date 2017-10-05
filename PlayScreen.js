@@ -29,7 +29,7 @@ UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 
 var CustomLayoutAnimation = {
-    duration: 1500,
+    duration: 2000,
     create: {
       type: LayoutAnimation.Types.linear,
       property: LayoutAnimation.Properties.opacity,
@@ -64,7 +64,7 @@ class PlayScreen extends Component {
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      2000
+      2300
     );
   }
 
@@ -76,10 +76,10 @@ class PlayScreen extends Component {
     //LayoutAnimation.linear();
     LayoutAnimation.configureNext(CustomLayoutAnimation)
 
-    if (this.state.top < -100) {
-      this.setState({top: this.state.top + 300})
+    if (this.state.top < 139) {
+      this.setState({top: this.state.top + 145})
     } else {
-      this.setState({top: this.state.top - 300})
+      this.setState({top: this.state.top - 145})
     }
   }
 
@@ -227,15 +227,15 @@ class PlayScreen extends Component {
           source={Images[this.state.level]} 
         />
 
-        <View style={{ height: 120, backgroundColor: "white" }} />
+        <View style={{ height: 120, backgroundColor: "#AAAAAA" }} />
         
         <Text style={{ fontSize: 20, textAlign: 'center', position: "absolute", top: 25, left: 135}}> Level {this.state.level}</Text>
                 
         <View style={{ height: 3, backgroundColor: "transparent" }} />
         
-        <View style={{ height: 60, backgroundColor: "white" }} />
+        <View style={{ height: 60, backgroundColor: "#AAAAAA" }} />
 
-        <View style={{ flex: 1, backgroundColor: "white",
+        <View style={{ flex: 1, backgroundColor: "#AAAAAA",
                        flexDirection: 'row', justifyContent: 'center', 
                        alignItems: 'center',}}>
         {ToRender.map((e) => e)}
@@ -244,7 +244,7 @@ class PlayScreen extends Component {
         
         
       
-        <View style={{ flex:1, backgroundColor: "white" }} />
+        <View style={{ flex:1, backgroundColor: "#AAAAAA" }} />
       
       </View>
 
